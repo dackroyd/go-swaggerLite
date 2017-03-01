@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
+	"sort"
 	"strings"
 )
 
@@ -189,6 +190,10 @@ func (parser *Parser) ParseApi(packageNames string) {
 	}
 	for _, packageName := range packages {
 		parser.ParseApiDescription(packageName)
+	}
+	// Ensure that the array of Apis within each Top level api is sorted in a stable ordering
+	for _, apiDeclaration := range parser.TopLevelApis {
+		sort.Sort(apiDeclaration.Apis)
 	}
 }
 

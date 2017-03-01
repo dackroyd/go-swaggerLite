@@ -9,6 +9,7 @@ import (
 	//	"log"
 	"os"
 	"path"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -75,6 +76,12 @@ func (suite *ParserSuite) TestTopLevelAPI() {
 
 func (suite *ParserSuite) CheckSubApiList(topApi *ApiDeclaration) {
 	assert.Len(suite.T(), topApi.Apis, 9, "Sub API was not parsed corectly")
+
+	var paths []string
+	for _, subApi := range topApi.Apis {
+		paths = append(paths, subApi.Path)
+	}
+	assert.True(suite.T(), sort.StringsAreSorted(paths), "API sub paths should be in alphabetical order: %v", paths)
 
 	for _, subApi := range topApi.Apis {
 		switch subApi.Path {

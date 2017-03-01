@@ -8,8 +8,22 @@ type ApiDeclaration struct {
 	ResourcePath   string            `json:"resourcePath"` // must start with /
 	Consumes       []string          `json:"-"`
 	Produces       []string          `json:"produces,omitempty"`
-	Apis           []*Api            `json:"apis,omitempty"`
+	Apis           Apis              `json:"apis,omitempty"`
 	Models         map[string]*Model `json:"models,omitempty"`
+}
+
+type Apis []*Api
+
+func (slice Apis) Len() int {
+	return len(slice)
+}
+
+func (slice Apis) Less(i, j int) bool {
+	return slice[i].Path < slice[j].Path;
+}
+
+func (slice Apis) Swap(i, j int) {
+	slice[i], slice[j] = slice[j], slice[i]
 }
 
 func NewApiDeclaration() *ApiDeclaration {
